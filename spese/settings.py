@@ -1,3 +1,4 @@
+import os
 """
 Django settings for spese project.
 
@@ -28,7 +29,7 @@ import os
 DEBUG = os.environ.get("DEBUG", "True") == "True"
 
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'gestore-scontrini.onrender.com']
 
 
 
