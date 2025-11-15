@@ -1,0 +1,35 @@
+{% extends 'spese_app/base.html' %}
+
+{% block content %}
+<h1 class="mb-3">Registra nuova spesa</h1>
+
+<form method="post" enctype="multipart/form-data" class="card p-3">
+  {% csrf_token %}
+  <div class="mb-3">
+    {{ expense_form.category.label_tag }}<br>
+    {{ expense_form.category }}
+  </div>
+  <div class="mb-3">
+    {{ expense_form.city.label_tag }}<br>
+    {{ expense_form.city }}
+  </div>
+  <div class="mb-3">
+    {{ expense_form.province.label_tag }}<br>
+    {{ expense_form.province }}
+  </div>
+  <div class="mb-3">
+    {{ expense_form.amount.label_tag }}<br>
+    {{ expense_form.amount }}
+  </div>
+
+  <hr>
+  <div class="mb-3">
+    {{ upload_form.images.label_tag }}<br>
+    {{ upload_form.images }}
+    <div class="form-text">Puoi caricare più immagini (scontrino fiscale, POS, ecc.).</div>
+  </div>
+
+  <button type="submit" class="btn btn-success">Salva</button>
+  <a href="{% url 'spese_app:expense_list' %}" class="btn btn-secondary">Annulla</a>
+</form>
+{% endblock %}

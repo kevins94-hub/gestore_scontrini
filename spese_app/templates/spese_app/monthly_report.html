@@ -1,0 +1,59 @@
+{% extends 'spese_app/base.html' %}
+
+{% block content %}
+<h1 class="mb-3">Report mensile</h1>
+
+<form method="get" class="row g-3 mb-3">
+  <div class="col-auto">
+    <label for="month" class="form-label">Mese</label>
+    <input type="number" min="1" max="12" id="month" name="month" value="{{ month }}" class="form-control">
+  </div>
+  <div class="col-auto">
+    <label for="year" class="form-label">Anno</label>
+    <input type="number" id="year" name="year" value="{{ year }}" class="form-control">
+  </div>
+  <div class="col-auto d-flex align-items-end">
+    <button type="submit" class="btn btn-primary">Filtra</button>
+  </div>
+</form>
+
+<p><strong>Totale spese nel mese:</strong> {{ total }} €</p>
+
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th>Data</th>
+      <th>Tipologia</th>
+      <th>Comune (Prov.)</th>
+      <th>Totale</th>
+      <th>Scontrini</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for expense in expenses %}
+    <tr>
+      <td>{{ expense.date }}</td>
+      <td>{{ expense.get_category_display }}</td>
+      <td>{{ expense.city }} ({{ expense.province }})</td>
+      <td>{{ expense.amount }} €</td>
+      <td>
+        {% for r in expense.receipts.all %}
+          {% if r.cleaned_image %}
+            <img src="{{ r.cleaned_image.url }}" alt="Scontrino" style="max-width: 200px; display:block; margin-bottom:5px;">
+          {% else %}
+            <img src="{{ r.original_image.url }}" alt="Scontrino" style="max-width: 200px; display:block; margin-bottom:5px;">
+          {% endif %}
+        {% empty %}
+          Nessun scontrino
+        {% endfor %}
+      </td>
+    </tr>
+  {% empty %}
+    <tr><td colspan="5">Nessuna spesa per questo mese.</td></tr>
+  {% endfor %}
+  </tbody>
+</table>
+
+<p class="text-muted">Per stampare il report con gli allegati, usa la funzione di stampa del browser (CTRL+P o CMD+P).</p>
+
+{% endblock %}

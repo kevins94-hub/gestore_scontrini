@@ -1,0 +1,42 @@
+{% extends 'spese_app/base.html' %}
+
+{% block content %}
+<h1 class="mb-3">Elenco spese</h1>
+
+<a href="{% url 'spese_app:expense_create' %}" class="btn btn-primary mb-3">Registra nuova spesa</a>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Data</th>
+      <th>Tipologia</th>
+      <th>Comune (Prov.)</th>
+      <th>Totale</th>
+      <th>Scontrini</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for expense in expenses %}
+    <tr>
+      <td>{{ expense.date }}</td>
+      <td>{{ expense.get_category_display }}</td>
+      <td>{{ expense.city }} ({{ expense.province }})</td>
+      <td>{{ expense.amount }} €</td>
+      <td>
+        {% for r in expense.receipts.all %}
+          {% if r.cleaned_image %}
+            <a href="{{ r.cleaned_image.url }}" target="_blank">Pulito {{ forloop.counter }}</a><br>
+          {% else %}
+            <a href="{{ r.original_image.url }}" target="_blank">Originale {{ forloop.counter }}</a><br>
+          {% endif %}
+        {% empty %}
+          Nessun scontrino
+        {% endfor %}
+      </td>
+    </tr>
+  {% empty %}
+    <tr><td colspan="5">Nessuna spesa registrata.</td></tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

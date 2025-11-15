@@ -1,0 +1,1 @@
+web: gunicorn spese.wsgi:application
